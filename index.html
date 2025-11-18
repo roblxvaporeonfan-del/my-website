@@ -256,16 +256,13 @@
 </head>
 <body>
     <div id="game-container">
-        <!-- Crosshair (PC ONLY) -->
-        <div id="crosshair"></div>
+        <!-- Crosshair (PC ONLY) --><div id="crosshair"></div>
         
-        <!-- Loading Overlay -->
-        <div id="loading-overlay" class="full-overlay bg-gray-900">
+        <!-- Loading Overlay --><div id="loading-overlay" class="full-overlay bg-gray-900">
             <div class="menu-card bg-gray-800">
                 <h1 class="text-white text-3xl font-black mb-4">Loading 3D Block Sandbox...</h1>
                 <p class="text-gray-400 mt-4">Initializing environment and physics.</p>
-                <!-- Tailwind Spinner -->
-                <div class="mt-8 flex justify-center">
+                <!-- Tailwind Spinner --><div class="mt-8 flex justify-center">
                     <svg class="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -274,8 +271,7 @@
             </div>
         </div>
         
-        <!-- Device Selection Overlay -->
-        <div id="device-select-overlay" class="full-overlay">
+        <!-- Device Selection Overlay --><div id="device-select-overlay" class="full-overlay">
             <div class="menu-card">
                 <h1>Select Control Mode</h1>
                 <p class="text-gray-300 mb-6">How will you be playing today?</p>
@@ -288,8 +284,7 @@
             </div>
         </div>
 
-        <!-- Main Menu Overlay -->
-        <div id="main-menu-overlay" class="full-overlay" style="display: none;">
+        <!-- Main Menu Overlay --><div id="main-menu-overlay" class="full-overlay" style="display: none;">
             <div class="menu-card">
                 <h1>Block Sandbox World</h1>
                 <p id="mode-confirmation" class="text-gray-300 mb-6"></p>
@@ -302,8 +297,7 @@
             </div>
         </div>
 
-        <!-- Instructions Overlay -->
-        <div id="instructions-overlay" class="full-overlay" style="display: none;">
+        <!-- Instructions Overlay --><div id="instructions-overlay" class="full-overlay" style="display: none;">
             <div id="instructions-content" class="menu-card">
                 <h1 style="text-align: center;">Controls</h1>
                 <div id="control-list"></div>
@@ -313,33 +307,26 @@
             </div>
         </div>
 
-        <!-- Mobile Controls Overlay (Hidden by default, shown when isMobile is true) -->
-        <div id="mobile-controls" style="display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 100%; z-index: 1000; pointer-events: none;">
+        <!-- Mobile Controls Overlay (Hidden by default, shown when isMobile is true) --><div id="mobile-controls" style="display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 100%; z-index: 1000; pointer-events: none;">
             
-            <!-- Virtual Joystick (Left) -->
-            <div id="joystick-container">
+            <!-- Virtual Joystick (Left) --><div id="joystick-container">
                 <div id="joystick-handle"></div>
             </div>
             
-            <!-- Action/Jump Buttons (Right) -->
-            <div class="fixed bottom-4 right-4 flex flex-col items-center space-y-4" style="pointer-events: auto;">
+            <!-- Action/Jump Buttons (Right) --><div class="fixed bottom-4 right-4 flex flex-col items-center space-y-4" style="pointer-events: auto;">
                 <div id="jump-button-mobile" class="action-button-large" data-key="space" style="pointer-events: auto;">JUMP</div>
                 <div id="respawn-button-mobile" class="action-button-small" data-key="e" style="pointer-events: auto;">RESPAWN (E)</div>
             </div>
             
-            <!-- Touch Look Area (Full screen width for mobile, pointer-events: none initially) -->
-            <div id="touch-look-area" class="fixed top-0 left-0 w-full h-full" style="pointer-events: auto;"></div>
+            <!-- Touch Look Area (Full screen width for mobile, pointer-events: none initially) --><div id="touch-look-area" class="fixed top-0 left-0 w-full h-full" style="pointer-events: auto;"></div>
         </div>
 
 
-        <!-- Game UI Elements -->
-        <!-- Death/Status Message Box -->
-        <div id="message-box" class="message-box ui-box" style="display: none;">
+        <!-- Game UI Elements --><!-- Death/Status Message Box --><div id="message-box" class="message-box ui-box" style="display: none;">
             <span>VOIDED! Press E or use the RESPAWN button.</span>
         </div>
         
-        <!-- Return to Menu Button (Fixed Position) -->
-        <button id="return-to-menu-button" 
+        <!-- Return to Menu Button (Fixed Position) --><button id="return-to-menu-button" 
             class="fixed bottom-5 left-5 px-6 py-3 bg-indigo-600 text-white font-bold rounded-xl 
                    shadow-lg hover:bg-indigo-700 transition-all z-50"
             style="display: none;">
@@ -362,6 +349,7 @@
         const MOUSE_SENSITIVITY = 0.0015; 
         const TOUCH_SENSITIVITY = 0.004;
 
+        // E is only used for PC respawn, mobile uses touch event directly
         const keys = { w: false, a: false, s: false, d: false, space: false, e: false, l: false }; 
         let isPointerLocked = false;
         let playerYaw = 0;
@@ -420,8 +408,9 @@
         
         function playDeathSound() {
             if (!isAudioReady) return;
+            // Low, descending unpleasant tone
             synth.triggerAttackRelease("C3", "8n", Tone.now());
-            synth.triggerAttackRelease("B2", "8n", Tone.now() + 0.1);
+            synth.triggerAttackRelease("B2", "8n", Tone.now() + 0.1); 
             synth.triggerAttackRelease("A#2", "8n", Tone.now() + 0.2);
         }
 
@@ -473,7 +462,7 @@
                 // Set up mobile controls immediately upon selection
                 setupJoystickControls();
                 setupMobileButtonControls();
-                setupTouchLook(); // CRITICAL: ensure touch look is set up
+                setupTouchLook(); 
             }
         }
 
@@ -484,7 +473,14 @@
             
             if (!isMobile) {
                 // PC: Attempt to lock the pointer
-                renderer.domElement.requestPointerLock();
+                renderer.domElement.requestPointerLock()
+                    .catch(e => {
+                        if (e.name === 'SecurityError') {
+                            console.warn("Pointer lock request failed or was dismissed by user (SecurityError).");
+                        } else {
+                            console.error("Pointer lock error:", e);
+                        }
+                    }); 
                 document.getElementById('crosshair').style.display = 'block';
                 document.getElementById('return-to-menu-button').style.display = 'block';
             } else {
@@ -512,8 +508,8 @@
                     <ul>
                         <li><strong>Virtual Joystick (Bottom-Left):</strong> Controls movement (Forward/Back/Strafe)</li>
                         <li><strong>Anywhere Else Drag:</strong> Look Around (Drag finger across the screen)</li>
-                        <li><strong>JUMP Button:</strong> Jump</li>
-                        <li><strong>RESPAWN Button:</strong> Respawn at center (if you fall off)</li>
+                        <li><strong>JUMP Button:</strong> Jump (You must be on the ground)</li>
+                        <li><strong>RESPAWN Button:</strong> Respawn at center (only if you fall off)</li>
                         <li><strong>Press L Key (optional):</strong> Return to Main Menu</li>
                     </ul>
                 `;
@@ -522,14 +518,15 @@
                     <h2>Movement Controls (PC)</h2>
                     <ul>
                         <li><strong>W, A, S, D</strong>: Movement (Forward/Back/Strafe)</li>
-                        <li><strong>Spacebar</strong>: Jump</li>
+                        <li><strong>Spacebar</strong>: Jump (You must be on the ground)</li>
                         <li><strong>Mouse Movement</strong>: Look Around (Click the screen to start)</li>
                     </ul>
 
                     <h2>Game Actions (PC)</h2>
                     <ul>
-                        <li><strong>E</strong>: Respawn at center (if you fall off)</li>
+                        <li><strong>E</strong>: Respawn at center (only if you fall off)</li>
                         <li><strong>L</strong>: Return to Main Menu</li>
+                        <li><strong>ESC</strong>: Pause/Unlock Mouse</li>
                     </ul>
                 `;
             }
@@ -542,11 +539,13 @@
             document.getElementById('message-box').style.display = 'none';
             document.getElementById('return-to-menu-button').style.display = 'none'; 
             document.getElementById('crosshair').style.display = 'none';
-            document.getElementById('mobile-controls').style.display = 'none'; 
-
-            // Show the device selection menu again
+            
+            // Re-show device selection instead of main menu
             document.getElementById('device-select-overlay').style.display = 'flex';
             document.getElementById('main-menu-overlay').style.display = 'none';
+
+            // Show mobile controls wrapper when in menu if mobile mode was selected
+            document.getElementById('mobile-controls').style.display = 'none'; 
 
             isGamePaused = true;
             isDead = false; 
@@ -572,6 +571,7 @@
             camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 1000);
 
             renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.shadowMap.enabled = true; 
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.getElementById('game-container').appendChild(renderer.domElement);
 
@@ -586,11 +586,20 @@
             scene.add(ambientLight);
             const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
             directionalLight.position.set(10, 20, 10);
+            directionalLight.castShadow = true; 
+            directionalLight.shadow.mapSize.width = 1024;
+            directionalLight.shadow.mapSize.height = 1024;
+            directionalLight.shadow.camera.near = 0.5;
+            directionalLight.shadow.camera.far = 50;
+            directionalLight.shadow.camera.left = -50;
+            directionalLight.shadow.camera.right = 50;
+            directionalLight.shadow.camera.top = 50;
+            directionalLight.shadow.camera.bottom = -50;
             scene.add(directionalLight);
 
             // Initialize Cannon.js world
             world = new CANNON.World();
-            world.gravity.set(0, -40, 0); // Increased gravity for snappier falls
+            world.gravity.set(0, -40, 0); 
             world.broadphase = new CANNON.SAPBroadphase(world);
 
             // Setup Physics Materials
@@ -598,7 +607,9 @@
             groundMaterial = new CANNON.Material("groundMaterial");
             const groundPlayerContact = new CANNON.ContactMaterial(groundMaterial, playerMaterial, {
                 friction: 0.1,
-                restitution: 0.0 // No bounce
+                restitution: 0.0, 
+                contactEquationStiffness: 1e9,
+                contactEquationRelaxation: 4
             });
             world.addContactMaterial(groundPlayerContact);
 
@@ -606,19 +617,24 @@
             const groundShape = new CANNON.Plane();
             const groundBody = new CANNON.Body({ mass: 0, material: groundMaterial });
             groundBody.addShape(groundShape);
-            groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2); // Rotate to lay flat
+            groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2); 
             world.addBody(groundBody);
             
             // Create Ground Mesh (Three.js)
-            const groundGeometry = new THREE.PlaneGeometry(100, 100);
-            const groundMesh = new THREE.Mesh(groundGeometry, new THREE.MeshPhongMaterial({ color: hexToColor('#10b981') }));
+            const groundGeometry = new THREE.PlaneGeometry(1000, 1000); 
+            const groundMesh = new THREE.Mesh(groundGeometry, new THREE.MeshPhongMaterial({ color: hexToColor('#0a4714') })); // CHANGED: Dark Green Baseplate
             groundMesh.rotation.x = -Math.PI / 2;
+            groundMesh.receiveShadow = true; 
             scene.add(groundMesh);
 
             // Create Player (Capsule for better collision)
             const playerShape = new CANNON.Cylinder(playerDimensions.radius, playerDimensions.radius, playerDimensions.height, 8);
-            playerBody = new CANNON.Body({ mass: 10, material: playerMaterial, fixedRotation: true });
-            // Offset the cylinder shape to align with the body's center
+            playerBody = new CANNON.Body({ 
+                mass: 10, 
+                material: playerMaterial, 
+                fixedRotation: true,
+                linearDamping: 0.9 
+            });
             playerBody.addShape(playerShape, new CANNON.Vec3(0, 0, 0));
             
             // Set start position and add to world
@@ -629,6 +645,7 @@
             // Create Player Mesh (Three.js)
             const playerGeometry = new THREE.CylinderGeometry(playerDimensions.radius, playerDimensions.radius, playerDimensions.height, 8);
             playerMesh = new THREE.Mesh(playerGeometry, new THREE.MeshPhongMaterial({ color: hexToColor('#facc15') }));
+            playerMesh.castShadow = true; 
             scene.add(playerMesh);
 
             // Setup Listeners
@@ -636,14 +653,14 @@
             document.addEventListener('keydown', onKeyDown);
             document.addEventListener('keyup', onKeyUp);
             setupMenuListeners();
-            setupPointerLock(); // Mouse look setup
+            setupPointerLock(); 
 
             // CRITICAL FIX: Ensure joystick center is calculated on load and resize
             window.addEventListener('load', updateJoystickCenter);
             window.addEventListener('resize', updateJoystickCenter);
         }
         
-        // --- Joystick Logic (CRITICALLY FIXED) ---
+        // --- Joystick Logic ---
 
         function updateJoystickCenter() {
             const joystickArea = document.getElementById('joystick-container');
@@ -669,18 +686,19 @@
             const normalizedY = dy / JOYSTICK_RADIUS;
 
             // Update keys for player movement:
-            // Forward/Backward (W/S) is negative Y screen coordinate (up on screen is -Y)
+            // Forward/Backward (W/S): Negative Y is Forward (W)
             keys.w = normalizedY < -0.1;
             keys.s = normalizedY > 0.1;
             
-            // Strafe (A/D) is X screen coordinate (right on screen is +X)
+            // Strafe (A/D): Negative X is Left (A), Positive X is Right (D)
             keys.a = normalizedX < -0.1;
             keys.d = normalizedX > 0.1;
         }
 
         function resetJoystickHandle() {
             joystickTouchIdentifier = null;
-            keys.w = keys.a = keys.s = keys.d = false;
+            // IMPORTANT: Only reset movement keys, keep others (like jump) separate
+            keys.w = keys.a = keys.s = keys.d = false; 
             moveJoystickHandle(0, 0); // Move handle back to center
         }
 
@@ -688,25 +706,21 @@
             const joystickArea = document.getElementById('joystick-container');
             
             joystickArea.addEventListener('touchstart', (e) => {
-                e.preventDefault(); // FIX: Prevent default scrolling/zooming immediately
-                if (joystickTouchIdentifier !== null) return; // Ignore if another touch is already controlling the joystick
+                e.preventDefault(); // Prevent default scrolling/zooming immediately
+                if (joystickTouchIdentifier !== null) return; 
                 
-                // Use the first new touch found
                 const touch = e.changedTouches[0];
                 joystickTouchIdentifier = touch.identifier;
                 
-                // Recalculate center on touch start for precision
                 updateJoystickCenter(); 
                 
-                // Move the handle based on touch position relative to center
                 moveJoystickHandle(touch.clientX - joystickCenter.x, touch.clientY - joystickCenter.y);
-            }, { passive: false }); // FIX: Must be passive: false
+            }, { passive: false }); 
 
             joystickArea.addEventListener('touchmove', (e) => {
-                e.preventDefault(); // FIX: Prevent default scrolling during drag
+                e.preventDefault(); // Prevent default scrolling during drag
                 if (joystickTouchIdentifier === null) return;
 
-                // Find the touch corresponding to the joystick ID
                 for (let i = 0; i < e.changedTouches.length; i++) {
                     const touch = e.changedTouches[i];
                     if (touch.identifier === joystickTouchIdentifier) {
@@ -726,11 +740,10 @@
                         break;
                     }
                 }
-            }, { passive: false }); // FIX: Must be passive: false
+            }, { passive: false }); 
 
             // Universal touchend/touchcancel handler for the joystick area
             const handleJoystickEnd = (e) => {
-                // Check if the releasing finger is the one controlling the joystick
                 for (let i = 0; i < e.changedTouches.length; i++) {
                     if (e.changedTouches[i].identifier === joystickTouchIdentifier) {
                         resetJoystickHandle();
@@ -743,7 +756,7 @@
         }
 
 
-        // --- Mobile Button Controls (Fixed) ---
+        // --- Mobile Button Controls (FIXED Jump/Respawn Logic) ---
 
         function setupMobileButtonControls() {
             const jumpButton = document.getElementById('jump-button-mobile');
@@ -751,55 +764,59 @@
             
             // Generic handler for buttons
             const handleTouchStart = (e) => {
-                e.preventDefault(); // FIX: CRITICAL - Stop browser interference
+                e.preventDefault(); 
                 const key = e.currentTarget.dataset.key;
                 keys[key] = true;
                 e.currentTarget.classList.add('active');
             };
 
             const handleTouchEnd = (e) => {
-                e.preventDefault(); // FIX: CRITICAL - Stop browser interference
+                e.preventDefault(); 
                 const key = e.currentTarget.dataset.key;
                 
-                // The jump check (keys.space) is handled in the game loop. 
-                keys[key] = false;
+                // Jump key needs to be released immediately for mobile to allow jump check once
+                // This is handled in the animate loop now.
+                
                 e.currentTarget.classList.remove('active');
                 
                 // Special case for 'E' (Respawn) - trigger immediately on release
-                if (key === 'e') {
+                if (key === 'e' && isDead) {
                     respawnPlayer();
                 }
             };
 
             // JUMP BUTTON
+            // keys.space is set on touchstart and unset in the animate loop after jump
             jumpButton.addEventListener('touchstart', handleTouchStart, { passive: false });
             jumpButton.addEventListener('touchend', handleTouchEnd, { passive: false });
             jumpButton.addEventListener('touchcancel', handleTouchEnd, { passive: false });
             
             // RESPAWN BUTTON
+            // keys.e is set on touchstart, respawnPlayer is called on touchend only if isDead
             respawnButton.addEventListener('touchstart', handleTouchStart, { passive: false });
             respawnButton.addEventListener('touchend', handleTouchEnd, { passive: false });
             respawnButton.addEventListener('touchcancel', handleTouchEnd, { passive: false });
         }
 
 
-        // --- Touch Look (CRITICALLY FIXED) ---
+        // --- Touch Look ---
 
         function setupTouchLook() {
             const lookArea = document.getElementById('touch-look-area');
 
             lookArea.addEventListener('touchstart', (e) => {
-                // Check if the target is *not* one of the buttons or the joystick
-                if (lookTouchIdentifier !== null) return; 
-                
                 // Find a touch that is not the joystick touch and is initiating the look
                 for (let i = 0; i < e.changedTouches.length; i++) {
                     const touch = e.changedTouches[i];
                     
-                    // Only start looking if this touch hasn't been claimed by the joystick
+                    if (touch.target.id === 'joystick-container' || touch.target.closest('#joystick-container')) {
+                        // Ignore touch events that are meant for the joystick itself
+                        continue;
+                    }
+
+                    if (lookTouchIdentifier !== null) continue; 
+                    
                     if (touch.identifier !== joystickTouchIdentifier) {
-                         // We don't use preventDefault here to allow other touches to interact with UI,
-                         // but we rely on the specific target element filtering in the other handlers.
                         lookTouchIdentifier = touch.identifier;
                         lastTouchX = touch.clientX;
                         lastTouchY = touch.clientY;
@@ -830,7 +847,7 @@
                     lastTouchX = currentTouch.clientX;
                     lastTouchY = currentTouch.clientY;
                 }
-            }, { passive: true }); // passive: true for performance during continuous looking
+            }, { passive: true }); 
 
             const handleLookEnd = (e) => {
                 for (let i = 0; i < e.changedTouches.length; i++) {
@@ -844,10 +861,8 @@
             lookArea.addEventListener('touchcancel', handleLookEnd, { passive: true });
         }
         
-        // --- End of CRITICAL Mobile Fixes ---
-
-
-        // --- Other Game Functions (Unchanged) ---
+        
+        // --- Other Game Functions ---
 
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
@@ -858,7 +873,8 @@
         function canJump() {
             // Checks if the player is standing on the ground using a raycast
             raycaster.set(playerMesh.position, downVector);
-            raycaster.far = playerDimensions.height / 2 + 0.5; // Ray extends slightly below the body
+            // Ray extends slightly below the body's base
+            raycaster.far = playerDimensions.height / 2 + 0.5; 
             
             const intersections = raycaster.intersectObjects(scene.children, true);
             
@@ -877,20 +893,15 @@
             if (event.key === 's') keys.s = true;
             if (event.key === 'd') keys.d = true;
             if (event.key === ' ') keys.space = true;
-            if (event.key === 'e') keys.e = true;
             if (event.key === 'l') keys.l = true; // Return to menu
 
             if (keys.l) {
                 showMainMenu();
             }
 
-            if (keys.e && isDead) {
+            // Respawn for PC (E)
+            if (event.key === 'e' && isDead) {
                 respawnPlayer();
-            }
-
-            if (keys.space && canJump()) {
-                playerBody.velocity.y = JUMP_VELOCITY;
-                playJumpSound();
             }
         }
 
@@ -902,7 +913,6 @@
             if (event.key === 's') keys.s = false;
             if (event.key === 'd') keys.d = false;
             if (event.key === ' ') keys.space = false;
-            if (event.key === 'e') keys.e = false;
         }
 
         function setupPointerLock() {
@@ -911,22 +921,31 @@
             // PC: Lock pointer on click
             element.addEventListener('click', () => {
                 if (!isMobile && !isGamePaused) {
-                    element.requestPointerLock();
+                    // Attempt to re-lock the pointer
+                    element.requestPointerLock()
+                        .catch(e => {
+                            if (e.name === 'SecurityError') {
+                                console.warn("Pointer lock request failed or was dismissed by user (SecurityError).");
+                            } else {
+                                console.error("Pointer lock error:", e);
+                            }
+                        }); 
                 }
             });
 
-            // Handle lock/unlock events
+            // Handle lock/unlock events (FIX for message box not disappearing)
             document.addEventListener('pointerlockchange', () => {
                 isPointerLocked = (document.pointerLockElement === element);
                 if (isPointerLocked) {
                     document.getElementById('crosshair').style.display = 'block';
+                    document.getElementById('message-box').style.display = 'none'; // FIX: Hide pause message on resume
                     document.addEventListener('mousemove', onMouseMove, false);
                 } else {
                     // Pointer unlocked (e.g., user pressed Esc)
                     document.getElementById('crosshair').style.display = 'none';
                     document.removeEventListener('mousemove', onMouseMove, false);
                     if (!isGamePaused) {
-                        showMessage("Game Paused. Click to resume.");
+                        showMessage("Game Paused. Click the screen to resume.");
                     }
                 }
             }, false);
@@ -940,8 +959,8 @@
 
         function respawnPlayer() {
             if (!isDead) { 
-                // Allow respawn via 'E' only when dead, but still play sound if forced
-                playRespawnSound(); 
+                // Only allow respawn if the character is dead (fell below -30)
+                console.log("Cannot respawn: Player is not dead.");
                 return;
             }
             
@@ -983,30 +1002,54 @@
                 const forwardVector = new THREE.Vector3(0, 0, -1);
                 forwardVector.applyAxisAngle(new THREE.Vector3(0, 1, 0), playerYaw);
                 
+                // Recalculate rightVector for clean strafing (cross(Y, Forward))
                 const rightVector = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), forwardVector);
 
-                // Preserve Y velocity for jumping/falling
-                const currentVelocityY = playerBody.velocity.y;
-                let desiredVelocity = new CANNON.Vec3(0, 0, 0);
+                // Calculate the desired force vector in the horizontal plane (XZ)
+                let desiredDirection = new CANNON.Vec3(0, 0, 0);
 
-                if (keys.w) { desiredVelocity.vadd(new CANNON.Vec3(forwardVector.x, 0, forwardVector.z).scale(MOVEMENT_SPEED), desiredVelocity); }
-                if (keys.s) { desiredVelocity.vadd(new CANNON.Vec3(forwardVector.x, 0, forwardVector.z).scale(-MOVEMENT_SPEED), desiredVelocity); }
-                if (keys.a) { desiredVelocity.vadd(new CANNON.Vec3(rightVector.x, 0, rightVector.z).scale(-MOVEMENT_SPEED), desiredVelocity); }
-                if (keys.d) { desiredVelocity.vadd(new CANNON.Vec3(rightVector.x, 0, rightVector.z).scale(MOVEMENT_SPEED), desiredVelocity); }
+                if (keys.w) { desiredDirection.vadd(new CANNON.Vec3(forwardVector.x, 0, forwardVector.z), desiredDirection); }
+                if (keys.s) { desiredDirection.vsub(new CANNON.Vec3(forwardVector.x, 0, forwardVector.z), desiredDirection); }
+                // A strafes LEFT (negative rightVector)
+                if (keys.a) { desiredDirection.vsub(new CANNON.Vec3(rightVector.x, 0, rightVector.z), desiredDirection); } 
+                // D strafes RIGHT (positive rightVector)
+                if (keys.d) { desiredDirection.vadd(new CANNON.Vec3(rightVector.x, 0, rightVector.z), desiredDirection); } 
 
-                // Apply new XZ velocity while maintaining gravity's effect (Y velocity)
-                playerBody.velocity.set(desiredVelocity.x, currentVelocityY, desiredVelocity.z);
+                // Only apply movement if input is present
+                if (keys.w || keys.s || keys.a || keys.d) {
+                    desiredDirection.normalize();
+                    
+                    const currentVelocityY = playerBody.velocity.y;
+                    
+                    // Set velocity to target speed in the desired direction, maintaining Y
+                    playerBody.velocity.x = desiredDirection.x * MOVEMENT_SPEED;
+                    playerBody.velocity.z = desiredDirection.z * MOVEMENT_SPEED;
+                    playerBody.velocity.y = currentVelocityY; // Restore Y velocity
+                } else {
+                    // Apply horizontal damping when no keys are pressed (for a better feel)
+                    playerBody.velocity.x *= 0.85; 
+                    playerBody.velocity.z *= 0.85; 
+                }
 
                 // Update Three.js mesh position and rotation
                 playerMesh.position.copy(playerBody.position);
                 playerMesh.quaternion.copy(playerBody.quaternion);
             }
 
+            // 3. Jump Check (Handles both PC key and Mobile Button)
+            if (keys.space && canJump()) {
+                playerBody.velocity.y = JUMP_VELOCITY;
+                playJumpSound();
+                
+                // Clear the 'space' key immediately after a jump, especially important for mobile touch buttons
+                keys.space = false;
+            }
 
-            // 3. Camera Update (Third Person View)
+
+            // 4. Camera Update (Third Person View)
             
             // Calculate camera direction vector based on playerYaw
-            const camDir = new THREE.Vector3(0, 0, 1); // Start facing back
+            const camDir = new THREE.Vector3(0, 0, 1); 
             camDir.applyAxisAngle(new THREE.Vector3(0, 1, 0), playerYaw);
             camDir.normalize();
 
@@ -1020,16 +1063,16 @@
             camera.lookAt(playerPos.x, playerPos.y + playerDimensions.height / 2, playerPos.z);
             
 
-            // 4. Death Condition
+            // 5. Death Condition
             if (playerBody.position.y < -30 && !isDead) {
                 isDead = true;
-                playerBody.sleep(); // Stop physics when dead
-                playerMesh.material.color.set(hexToColor('#b91c1c')); // Turn red
+                playerBody.sleep(); 
+                playerMesh.material.color.set(hexToColor('#b91c1c')); 
                 showMessage("VOIDED! Press E or use the RESPAWN button.");
                 playDeathSound();
             }
 
-            // 5. Render
+            // 6. Render
             renderer.render(scene, camera);
         }
 
